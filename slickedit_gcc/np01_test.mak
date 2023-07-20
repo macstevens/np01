@@ -20,14 +20,14 @@ endif
 ifeq "$(CFG)" "Debug"
 OUTDIR=Debug
 OUTFILE=$(OUTDIR)/np01_test.exe
-CFG_INC=-I../../cf01
+CFG_INC=-I.. -I../../cf01
 CFG_LIB=$(OUTDIR)/np01.a  ../../cf01/slickedit_gcc/$(OUTDIR)/cf01.a
 CFG_OBJ=
 COMMON_OBJ=$(OUTDIR)/main.o 
 OBJ=$(COMMON_OBJ) $(CFG_OBJ)
 ALL_OBJ=$(OUTDIR)/main.o 
 
-COMPILE=g++ -c -ggdb  -g -o "$(OUTDIR)/$(*F).o" $(CFG_INC) "$<"
+COMPILE=g++ -c -ggdb -g -o "$(OUTDIR)/$(*F).o" $(CFG_INC) "$<"
 LINK=g++ -ggdb -g -o "$(OUTFILE)" $(OBJ) $(CFG_LIB)
 
 # Pattern rules
@@ -69,7 +69,7 @@ endif
 ifeq "$(CFG)" "Release"
 OUTDIR=Release
 OUTFILE=$(OUTDIR)/np01_test.exe
-CFG_INC=-I../../cf01
+CFG_INC=-I.. -I../../cf01
 CFG_LIB=$(OUTDIR)/np01.a  ../../cf01/slickedit_gcc/$(OUTDIR)/cf01.a
 CFG_OBJ=
 COMMON_OBJ=$(OUTDIR)/main.o 
@@ -78,6 +78,55 @@ ALL_OBJ=$(OUTDIR)/main.o
 
 COMPILE=g++ -c -O2 -o "$(OUTDIR)/$(*F).o" $(CFG_INC) "$<"
 LINK=g++ -O2 -o "$(OUTFILE)" $(OBJ) $(CFG_LIB)
+
+# Pattern rules
+$(OUTDIR)/%.o : ../%.cpp
+	$(COMPILE)
+
+# Build rules
+all: $(OUTFILE)
+
+$(OUTFILE): $(OUTDIR) deps $(OBJ)
+	$(LINK)
+
+$(OUTDIR):
+	$(MKDIR) -p "$(OUTDIR)"
+
+# Build dependencies
+deps:
+	@(cd .;$(MAKE) -f np01.mak CFG=$(CFG))
+	@(cd ../../cf01/slickedit_gcc/;$(MAKE) -f cf01.mak CFG=$(CFG))
+
+# Rebuild this project
+rebuild: cleanall all
+
+# Clean this project
+clean:
+	$(RM) -f $(OUTFILE)
+	$(RM) -f $(OBJ)
+
+# Clean this project and all dependencies
+cleanall: clean
+	@(cd .;$(MAKE) -f np01.mak cleanall CFG=$(CFG))
+	@(cd ../../cf01/slickedit_gcc/;$(MAKE) -f cf01.mak cleanall CFG=$(CFG))
+endif
+
+#
+# Configuration: Profile
+#
+# https://ftp.gnu.org/old-gnu/Manuals/gprof-2.9.1/html_chapter/gprof_toc.html
+ifeq "$(CFG)" "Profile"
+OUTDIR=Profile
+OUTFILE=$(OUTDIR)/np01_test.exe
+CFG_INC=-I.. -I../../cf01
+CFG_LIB=$(OUTDIR)/np01.a  ../../cf01/slickedit_gcc/$(OUTDIR)/cf01.a
+CFG_OBJ=
+COMMON_OBJ=$(OUTDIR)/main.o 
+OBJ=$(COMMON_OBJ) $(CFG_OBJ)
+ALL_OBJ=$(OUTDIR)/main.o 
+
+COMPILE=g++ -c -O1 -pg -o "$(OUTDIR)/$(*F).o" $(CFG_INC) "$<"
+LINK=g++ -O1 -pg -o "$(OUTFILE)" $(OBJ) $(CFG_LIB)
 
 # Pattern rules
 $(OUTDIR)/%.o : ../%.cpp

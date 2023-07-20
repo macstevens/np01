@@ -1,6 +1,6 @@
 /* np01_bmp.cpp 
 
-Copyright (c) 2021 Mac Stevens <stevensm@earthlink.net> <www.macstevens.net>
+Copyright (c) 2023 Mac Stevens <stevensm@earthlink.net> <www.macstevens.net>
 
 Permission to use, copy, modify, and distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
@@ -20,10 +20,11 @@ Reference: https://opensource.org/licenses/ISC
 namespace np01 {
 
 
-np01_bmp_file::np01_bmp_file(){
+np01_bmp_file::np01_bmp_file(): m_header(), m_rows(){
 }
 
-np01_bmp_file::np01_bmp_file(const np01_bmp_file_init_params& init_params){
+np01_bmp_file::np01_bmp_file(const np01_bmp_file_init_params& init_params): 
+    m_header(), m_rows() {
 init(init_params);
 }
 

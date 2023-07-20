@@ -26,7 +26,7 @@ Reference:
     array of equal-size cells. Each one is associated with a list of spatial
     objects which intersect or overlap with the cell."
 
-Copyright (c) 2021 Mac Stevens <stevensm@earthlink.net> <www.macstevens.net>
+Copyright (c) 2023 Mac Stevens <stevensm@earthlink.net> <www.macstevens.net>
 
 Permission to use, copy, modify, and distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
@@ -488,7 +488,7 @@ AA_INCR_CALL_DEPTH();
 AA_XDBG_ASSERT(0 == verify_data(AA_ERR_BUF(),AA_ERR_BUF_CAPACITY(),
     AA_ERR_BUF_POS_PTR()), CF01_AA_DEBUG_LEVEL_3);
 np01_xy_node *n = new np01_xy_node();
-n->set_idx(m_node_vec.size());
+n->set_idx(static_cast<np01_uint32>(m_node_vec.size()));
 m_node_vec.push_back(n);
 n->set_owner(this);
 AA_ALWAYS_ASSERT(n->get_edge() == NULL);
@@ -1856,7 +1856,7 @@ AUTO_ASSERT(node_b->get_xy_group_type() == NP01_XY_GROUP_TYPE_B);
 AUTO_ASSERT(node_a->get_edge() == NULL);
 AUTO_ASSERT(node_b->get_edge() == NULL);
 np01_xy_edge *edge = new np01_xy_edge();
-edge->set_idx(m_edge_vec.size());
+edge->set_idx(static_cast<np01_uint32>(m_edge_vec.size()));
 m_edge_vec.push_back(edge);
 edge->set_owner(this);
 edge->set_node_a(node_a);
@@ -2117,8 +2117,9 @@ if((NULL != e) && (NULL != edges)){
                 np01_xy_edge *edge = lg_sq_node->get_owner();
                 AUTO_ASSERT(edge != e);
                 search_vec->push_back(idx_edge_ptr_pair(edge->get_idx(),edge));
-                AUTO_ASSERT(0 == lg_sq_node->verify_data(AA_ERR_BUF(),
-                    AA_ERR_BUF_CAPACITY(), AA_ERR_BUF_POS_PTR()));
+                AA_XDBG_ASSERT(0 == lg_sq_node->verify_data(AA_ERR_BUF(),
+                    AA_ERR_BUF_CAPACITY(), AA_ERR_BUF_POS_PTR()),
+                    CF01_AA_DEBUG_LEVEL_2);
                 lg_sq_node = lg_sq_node->get_prev();
                 }
 
@@ -2128,8 +2129,9 @@ if((NULL != e) && (NULL != edges)){
                 np01_xy_edge *edge = lg_sq_node->get_owner();
                 AUTO_ASSERT(edge != e);
                 search_vec->push_back(idx_edge_ptr_pair(edge->get_idx(),edge));
-                AUTO_ASSERT(0 == lg_sq_node->verify_data(AA_ERR_BUF(),
-                    AA_ERR_BUF_CAPACITY(), AA_ERR_BUF_POS_PTR()));
+                AA_XDBG_ASSERT(0 == lg_sq_node->verify_data(AA_ERR_BUF(),
+                    AA_ERR_BUF_CAPACITY(), AA_ERR_BUF_POS_PTR()),
+                    CF01_AA_DEBUG_LEVEL_2);
                 lg_sq_node = lg_sq_node->get_next();
                 }
 
@@ -2860,7 +2862,7 @@ if((point_count_ab > 0) && (init_params->loc_grid_density > 0.0)){
         }
 
     /* initialize locator grids */
-    np01_xy_loc_grid_dim_init_params loc_grid_dim_init_params;
+    np01_xy_loc_grid_dim_init_params loc_grid_dim_init_params = {};
     loc_grid_dim_init_params.point_count = point_count_ab;            
     loc_grid_dim_init_params.bb_min_xy.first = x_min; 
     loc_grid_dim_init_params.bb_min_xy.second = y_min; 
@@ -2876,10 +2878,10 @@ if((point_count_ab > 0) && (init_params->loc_grid_density > 0.0)){
     m_edge_map->init_loc_grid(loc_grid_dim);
 
     /* reserve size for nodes, edges */
-    m_node_map_a->reserve(point_count_a);
-    m_node_map_b->reserve(point_count_b);
-    m_edge_map->reserve(
-        (point_count_a < point_count_b) ? point_count_a : point_count_b);
+    m_node_map_a->reserve(static_cast<np01_uint32>(point_count_a));
+    m_node_map_b->reserve(static_cast<np01_uint32>(point_count_b));
+    m_edge_map->reserve(static_cast<np01_uint32>(
+        (point_count_a < point_count_b) ? point_count_a : point_count_b));
 
     /* create nodes */
     xy_end_itr = (init_params->xy_vec_a).end();
@@ -2923,7 +2925,7 @@ int rand_int = 0;
 np01_xy_node_map *node_map_sm, *node_map_lg;
 np01_uint32 small_node_count;
 np01_uint32 i;
-np01_xy_node *node_sm, *node_lg;
+np01_xy_node *node_sm=NULL;
 if( m_node_map_a->get_node_count() <= m_node_map_b->get_node_count() ){
     node_map_sm = m_node_map_a;
     node_map_lg = m_node_map_b;
@@ -3311,7 +3313,7 @@ if(AA_SHOULD_RUN_XDBG(CF01_AA_DEBUG_LEVEL_1)){
     }
 
 /* assign points far to near */
-j = near_far_vec.size();
+j = static_cast<np01_uint32>(near_far_vec.size());
 while(j > 0){
     --j;
     const fv_gt_idx_node& fgin = near_far_vec.at(j);
@@ -3522,8 +3524,8 @@ for(i=0; i < node_count_a; ++i){
 for(i=0; i < node_count_b; ++i){
     node_b = m_node_map_b->get_node_by_idx(i);
     AA_ALWAYS_ASSERT(NULL != node_b);
-    xa = node_b->get_x();
-    ya = node_b->get_y();
+    xb = node_b->get_x();
+    yb = node_b->get_y();
     if(xb<x_shp_min){x_shp_min=xb;}
     if(xb>x_shp_max){x_shp_max=xb;}
     if(yb<y_shp_min){y_shp_min=yb;}
@@ -3568,9 +3570,12 @@ for(i = 0; i <= loc_grid_dim_e.get_w(); ++i){
     y=loc_grid_dim_e.get_y_min() + 
         (static_cast<np01_float64>(loc_grid_dim_e.get_h()) *
             loc_grid_dim_e.get_sq_size());
-    ii = pixel_border_width + ((x-x_shp_min)*scale_factor);
-    jj = pixel_border_width + ((loc_grid_dim_e.get_y_min()-y_shp_min)*scale_factor);
-    jj2 = pixel_border_width + ((y-y_shp_min)*scale_factor);
+    ii = pixel_border_width +
+        static_cast<np01_uint32>(floor((x-x_shp_min)*scale_factor));
+    jj = pixel_border_width + static_cast<np01_uint32>(
+        floor((loc_grid_dim_e.get_y_min()-y_shp_min)*scale_factor));
+    jj2 = pixel_border_width +
+        static_cast<np01_uint32>(floor((y-y_shp_min)*scale_factor));
     bmp_file.draw_line(ii,jj,ii,jj2,np01::np01_bmp_color(96,96,96));
     }
 for(j = 0; j <= loc_grid_dim_e.get_h(); ++j){
@@ -3579,9 +3584,12 @@ for(j = 0; j <= loc_grid_dim_e.get_h(); ++j){
     x=loc_grid_dim_e.get_x_min() + 
         (static_cast<np01_float64>(loc_grid_dim_e.get_w()) *
             loc_grid_dim_e.get_sq_size());
-    jj = pixel_border_width + ((y-y_shp_min)*scale_factor);
-    ii = pixel_border_width + ((loc_grid_dim_e.get_x_min()-x_shp_min)*scale_factor);
-    ii2 = pixel_border_width + ((x-x_shp_min)*scale_factor);
+    jj = pixel_border_width +
+        static_cast<np01_uint32>(floor((y-y_shp_min)*scale_factor));
+    ii = pixel_border_width + static_cast<np01_uint32>(
+        floor((loc_grid_dim_e.get_x_min()-x_shp_min)*scale_factor));
+    ii2 = pixel_border_width +
+        static_cast<np01_uint32>(floor((x-x_shp_min)*scale_factor));
     bmp_file.draw_line(ii,jj,ii2,jj,np01::np01_bmp_color(96,96,96,false));
     }
 
@@ -3590,8 +3598,10 @@ for(i=0; i < node_count_a; ++i){
     AA_ALWAYS_ASSERT(NULL != node_a);
     xa = node_a->get_x();
     ya = node_a->get_y();
-    ii = pixel_border_width + ((xa-x_shp_min)*scale_factor);
-    jj = pixel_border_width + ((ya-y_shp_min)*scale_factor);
+    ii = pixel_border_width +
+        static_cast<np01_uint32>(floor((xa-x_shp_min)*scale_factor));
+    jj = pixel_border_width +
+        static_cast<np01_uint32>(floor((ya-y_shp_min)*scale_factor));
     bmp_file.draw_diamond(ii,jj,7,np01::np01_bmp_color(0,255,0,true));
     }
 
@@ -3600,8 +3610,10 @@ for(i=0; i < node_count_b; ++i){
     AA_ALWAYS_ASSERT(NULL != node_b);
     xb = node_b->get_x();
     yb = node_b->get_y();
-    ii = pixel_border_width + ((xb-x_shp_min)*scale_factor);
-    jj = pixel_border_width + ((yb-y_shp_min)*scale_factor);
+    ii = pixel_border_width +
+        static_cast<np01_uint32>(floor((xb-x_shp_min)*scale_factor));
+    jj = pixel_border_width +
+        static_cast<np01_uint32>(floor((yb-y_shp_min)*scale_factor));
     bmp_file.draw_box(ii-2,jj-2,ii+2,jj+2,np01::np01_bmp_color(255,0,0,true));
     }
 
@@ -3615,10 +3627,10 @@ for(i=0; i < edge_count;++i){
         ya = node_a->get_y();
         xb = node_b->get_x();
         yb = node_b->get_y();
-        ii = pixel_border_width + ((xa-x_shp_min)*scale_factor);
-        jj = pixel_border_width + ((ya-y_shp_min)*scale_factor);
-        ii2 = pixel_border_width + ((xb-x_shp_min)*scale_factor);
-        jj2 = pixel_border_width + ((yb-y_shp_min)*scale_factor);
+        ii = pixel_border_width + static_cast<np01_uint32>(floor((xa-x_shp_min)*scale_factor));
+        jj = pixel_border_width + static_cast<np01_uint32>(floor((ya-y_shp_min)*scale_factor));
+        ii2 = pixel_border_width + static_cast<np01_uint32>(floor((xb-x_shp_min)*scale_factor));
+        jj2 = pixel_border_width + static_cast<np01_uint32>(floor((yb-y_shp_min)*scale_factor));
         bmp_file.draw_line(ii,jj,ii2,jj2,np01::np01_bmp_color(0,0,255,false));
         }
     }
@@ -3834,7 +3846,7 @@ while(!done){
 
     /* report progress */
     now = time(NULL);
-    const double time_elapsed = now - start_time;
+    const double time_elapsed = static_cast<double>(now - start_time);
     if( ((time_elapsed < 10.0) && (now >= (prev_update_time + 1))) ||
         (now >= (prev_update_time + 10))){
         const double progress_ratio = (m_max_iteration_count>0) ?
@@ -3843,7 +3855,7 @@ while(!done){
         const double total_expected_time = (progress_ratio > 0.0) ?
             time_elapsed / progress_ratio : time_elapsed;
         const double expected_remaining_time=total_expected_time-time_elapsed;
-        np01_xy_pair_genetic_wksp_result result;
+        np01_xy_pair_genetic_wksp_result result = {};
         get_result(&result);
         const np01_uint32& crossovers = result.m_total_edge_crossover_count;
         const np01_xy_pair_sub_soln_cost& cost = result.m_solution.get_cost();
@@ -4250,7 +4262,7 @@ AA_DECR_CALL_DEPTH();
 
 /* perform genetic crossovers only occasionally */
 void np01_xy_pair_genetic_wksp::gen_crossover(){
-size_t i, j, k;
+size_t i=0;
 AA_INCR_CALL_DEPTH();
 /* perform genetic crossovers only occasionally */
 advance_rand();
@@ -4686,7 +4698,7 @@ for(i = 0; i < idx_pair_count; ++i){
         AA_ALWAYS_ASSERT(NULL != node_b);
         ++cost.m_unpaired_count;
         }
-    s->set_len(i,edge_len);
+    s->set_len(static_cast<np01_uint32>(i),edge_len);
     }
 s->set_cost(cost);
 s->set_cost_valid(true);
@@ -4702,7 +4714,7 @@ m_rand_uint32= (m_rand_uint32 * 1103515245) + 12345;
 
 
 const char *np01_main::m_prog_name = "Newport Algorithm 1";
-const char *np01_main::m_version_str = "0.1.0";
+const char *np01_main::m_version_str = "0.1.1 " __DATE__ " " __TIME__;
 
 int np01_main::run(int argc, char *argv[]){
 np01_main main(argc, argv);
@@ -4968,7 +4980,7 @@ size_t y_end_delim_pos;
 np01::np01_xy xy;
 std::string bmp_filename;
 
-np01_xy_pair_map_init_ab_params init_params;
+np01_xy_pair_map_init_ab_params init_params = {};
 #define NP01_DEFAULT_LOC_GRID_DENSITY (16)
 #define NP01_DEFAULT_MAX_LOC_GRID_SQ_COUNT (16384)
 init_params.loc_grid_density = NP01_DEFAULT_LOC_GRID_DENSITY;
@@ -5056,7 +5068,7 @@ if(m_iterations_option && (m_iterations > 0)){
     }
 np01::np01_xy_pair_genetic_wksp w(wksp_init_params);
 w.run();
-np01::np01_xy_pair_genetic_wksp_result w_result;
+np01::np01_xy_pair_genetic_wksp_result w_result = {};
 w.get_result(&w_result);
 const np01_xy_pair_sub_soln& solution =  w_result.m_solution;
 
@@ -5163,7 +5175,7 @@ for(int iteration=0; iteration < max_iteration_count; ++iteration){
         }
 
     /* choose points */
-    np01_xy_pair_map_init_ab_params init_params;
+    np01_xy_pair_map_init_ab_params init_params = {};
     init_params.loc_grid_density = NP01_DEFAULT_LOC_GRID_DENSITY;
     init_params.max_loc_grid_sq_count = NP01_DEFAULT_MAX_LOC_GRID_SQ_COUNT;
 
@@ -5204,10 +5216,12 @@ for(int iteration=0; iteration < max_iteration_count; ++iteration){
                 &(init_params.xy_vec_b));
             break;
         }
-    const np01_uint32 xy_count_a = init_params.xy_vec_a.size();
-    const np01_uint32 xy_count_b = init_params.xy_vec_b.size();
-    const np01_uint32 expected_edge_count = (xy_count_a < xy_count_b) ?
-        xy_count_a : xy_count_b;
+    const np01_uint32 xy_count_a =
+        static_cast<np01_uint32>(init_params.xy_vec_a.size());
+    const np01_uint32 xy_count_b =
+        static_cast<np01_uint32>(init_params.xy_vec_b.size());
+    const np01_uint32 expected_edge_count = static_cast<np01_uint32>(
+        (xy_count_a < xy_count_b) ? xy_count_a : xy_count_b);
 
     /* Create nodes.  Initialize locator grids for nodes and edges. */
     np01::np01_xy_pair_map xy_pair_map; 
@@ -5239,7 +5253,7 @@ for(int iteration=0; iteration < max_iteration_count; ++iteration){
         }
     np01::np01_xy_pair_genetic_wksp w(wksp_init_params);
     w.run();
-    np01::np01_xy_pair_genetic_wksp_result w_result;
+    np01::np01_xy_pair_genetic_wksp_result w_result = {};
     w.get_result(&w_result);
     const np01_xy_pair_sub_soln& solution =  w_result.m_solution;
 
@@ -5320,7 +5334,7 @@ std::cout << "error_count=" << error_count << "\n";
 void np01_main::execute_test_1(){
 std::cout << "test 1\n";
 
-np01::np01_xy_pair_map_init_ab_params init_params;
+np01::np01_xy_pair_map_init_ab_params init_params = {};
 init_params.xy_vec_a.push_back( np01::np01_xy(-1.0,-1.0) );
 init_params.xy_vec_a.push_back( np01::np01_xy(-1.0,1.0) );
 init_params.xy_vec_a.push_back( np01::np01_xy(1.0,-1.0) );
@@ -5339,7 +5353,7 @@ np01::np01_xy_pair_genetic_wksp_init_params wksp_init_params;
 wksp_init_params.set_default(&xy_pair_map);
 np01::np01_xy_pair_genetic_wksp w(wksp_init_params);
 w.run();
-np01::np01_xy_pair_genetic_wksp_result w_result;
+np01::np01_xy_pair_genetic_wksp_result w_result = {};
 w.get_result(&w_result);
 
 np01::np01_xy_loc_grid_dim d = xy_pair_map.get_node_map_a()->get_loc_grid_dim();
@@ -5368,7 +5382,7 @@ CF01_AA_WKSP_OUTPUT(std::cout);
 void np01_main::execute_test_2(){
 std::cout << "test 2\n";
 
-np01::np01_xy_pair_map_init_ab_params init_params;
+np01::np01_xy_pair_map_init_ab_params init_params = {};
 for(int ii = -4; ii <=4; ++ii ){
     for(int jj = -4; jj <=4; ++jj ){
         init_params.xy_vec_a.push_back( np01::np01_xy(ii, jj) );
@@ -5394,7 +5408,7 @@ wksp_init_params.set_default(&xy_pair_map);
 wksp_init_params.m_target_max_edge_len = 3.0;
 np01::np01_xy_pair_genetic_wksp w(wksp_init_params);
 w.run();
-np01::np01_xy_pair_genetic_wksp_result w_result;
+np01::np01_xy_pair_genetic_wksp_result w_result = {};
 w.get_result(&w_result);
 
 np01::np01_xy_loc_grid_dim d = xy_pair_map.get_node_map_a()->get_loc_grid_dim();
@@ -5426,7 +5440,7 @@ void np01_main::execute_test_3(){
 std::cout << "test 3\n";
 
 
-np01::np01_xy_pair_map_init_ab_params init_params;
+np01::np01_xy_pair_map_init_ab_params init_params = {};
 for(int ii = -20; ii <=20; ++ii ){
     for(int jj = -20; jj <=20; ++jj ){
         init_params.xy_vec_a.push_back( np01::np01_xy(ii, jj) );
@@ -5452,7 +5466,7 @@ wksp_init_params.set_default(&xy_pair_map);
 wksp_init_params.m_target_max_edge_len = 5.0;
 np01::np01_xy_pair_genetic_wksp w(wksp_init_params);
 w.run();
-np01::np01_xy_pair_genetic_wksp_result w_result;
+np01::np01_xy_pair_genetic_wksp_result w_result = {};
 w.get_result(&w_result);
 
 np01::np01_xy_loc_grid_dim d = xy_pair_map.get_node_map_a()->get_loc_grid_dim();
@@ -5483,7 +5497,7 @@ CF01_AA_WKSP_OUTPUT(std::cout);
 void np01_main::execute_test_4(){
 std::cout << "test 4\n";
 
-np01::np01_xy_pair_map_init_ab_params init_params;
+np01::np01_xy_pair_map_init_ab_params init_params = {};
 for(int ii = -50; ii <=50; ++ii ){
     for(int jj = -50; jj <=50; ++jj ){
         init_params.xy_vec_a.push_back( np01::np01_xy(ii, jj) );
@@ -5541,7 +5555,7 @@ CF01_AA_WKSP_OUTPUT(std::cout);
 void np01_main::execute_test_5(){
 std::cout << "test 5\n";
 
-np01::np01_xy_pair_map_init_ab_params init_params;
+np01::np01_xy_pair_map_init_ab_params init_params = {};
 for(int ii = -100; ii <=100; ++ii ){
     for(int jj = -100; jj <=100; ++jj ){
         init_params.xy_vec_a.push_back( np01::np01_xy(ii, jj) );
@@ -5579,7 +5593,7 @@ wksp_init_params.set_default(&xy_pair_map);
 wksp_init_params.m_target_max_edge_len = 50.0;
 np01::np01_xy_pair_genetic_wksp w(wksp_init_params);
 w.run();
-np01::np01_xy_pair_genetic_wksp_result w_result;
+np01::np01_xy_pair_genetic_wksp_result w_result = {};
 w.get_result(&w_result);
 
 np01::np01_xy_loc_grid_dim d = xy_pair_map.get_node_map_a()->get_loc_grid_dim();
@@ -5615,9 +5629,9 @@ void np01_main::test_init_xy_vec_method_0(const np01_uint32& approx_point_count,
 np01_uint32 rand_uint32 = rand_seed;
 
 
-np01_float64 sqrt_approx_pt_count =
-    sqrt(static_cast<np01_float64>(approx_point_count));
-np01_uint32 w_pt_count, h_pt_count;
+const np01_uint32 sqrt_approx_pt_count = static_cast<np01_uint32>(
+    sqrt(static_cast<np01_float64>(approx_point_count)));
+np01_uint32 w_pt_count=0, h_pt_count=0;
 
 rand_uint32 = (rand_uint32 * 1103515245) + 12345; /* advance rand number */
 switch((rand_uint32 >> 16) % 4){

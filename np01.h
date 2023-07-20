@@ -1,6 +1,6 @@
 /* np01.h Newport Algorithms version 1
 
-Copyright (c) 2021 Mac Stevens <stevensm@earthlink.net> <www.macstevens.net>
+Copyright (c) 2023 Mac Stevens <stevensm@earthlink.net> <www.macstevens.net>
 
 Permission to use, copy, modify, and distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
@@ -8,6 +8,9 @@ copyright notice and this permission notice appear in all copies.
 
 Reference: https://opensource.org/licenses/ISC
 */
+#ifndef NP01_H
+#define NP01_H
+
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -254,7 +257,8 @@ public:
         node_vec *utility_vec) const;
     np01_xy_node *get_near_unconnected_node(const np01_xy& xy,
         const node_vec *usable_node_lookup_table, node_vec *utility_vec)const;
-    np01_uint32 get_node_count() const { return m_node_vec.size(); }
+    np01_uint32 get_node_count() const {
+        return static_cast<np01_uint32>(m_node_vec.size()); }
     np01_xy_node *get_node_by_idx( const np01_uint32& i ) const {
         return (( i < m_node_vec.size() ) ? m_node_vec[i] : NULL); }
     np01_xy_group_type get_xy_group_type() const { return m_xy_group_type; }
@@ -458,7 +462,8 @@ public:
         edge_vec *edges, idx_edge_ptr_pair_vec *utility_vec) const;
     void get_intersecting_edges(const np01_xy_edge *e, edge_vec *edges,
         idx_edge_ptr_pair_vec *utility_vec ) const;
-    np01_uint32 get_edge_count() const { return m_edge_vec.size(); }
+    np01_uint32 get_edge_count() const {
+        return static_cast<np01_uint32>(m_edge_vec.size()); }
     np01_xy_edge *get_edge_by_idx( const np01_uint32& i ) const {
         return (( i < m_edge_vec.size() ) ? m_edge_vec[i] : NULL); }
     void get_edge_crossover_count( np01_uint32_vec *edge_crossover_count_vec,
@@ -823,3 +828,5 @@ void np01_snprintf( char *buf, const size_t buf_capacity, size_t *buf_pos,
                const char *fmt, ... );
 
 } /* namespace np01 */
+
+#endif /* NP01_H */

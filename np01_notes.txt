@@ -6,7 +6,31 @@ CF01 source code:
 https://github.com/macstevens/cf01
 
 
-Complete source code, Windows executable, and DLLs:
+
+INSTRUCTIONS 
+
+1. Get Source Code
+Download https://github.com/macstevens/np01/archive/refs/heads/master.zip
+Download https://github.com/macstevens/cf01/archive/refs/heads/master.zip
+Unzip and arrange directories in the following structure:
+np01_test
+ +-cf01
+ | +-cf01.h
+ | +- ...
+ +-np01
+   +-np01.h
+   +- ...
+   
+2. Build executable:
+$np01/slickedit_gcc$ make --makefile=np01_test.mak CFG=Release
+
+3. Run test
+$cd Release
+$./np01_test.exe --pair-points  --xy-a-file=a.csv  --xy-b-file=b.csv  --out-ab-file=ab.csv  --max-len=3.0
+
+
+
+Complete source code, Windows executable, and DLLs (for v0.1.0):
 http://www.macstevens.net/software/2021_04_28_1000/2021_04_28_1000_newport_v0.1.0.zip
 
 

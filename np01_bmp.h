@@ -4,7 +4,7 @@ Reference:
     https://engineering.purdue.edu/ece264/17au/hw/HW15
 
 
-Copyright (c) 2021 Mac Stevens <stevensm@earthlink.net> <www.macstevens.net>
+Copyright (c) 2023 Mac Stevens <stevensm@earthlink.net> <www.macstevens.net>
 
 Permission to use, copy, modify, and distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
