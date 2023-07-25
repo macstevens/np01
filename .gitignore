@@ -9,3 +9,5 @@
 /msvc/.vs
 /msvc/np01_test/x64/
 /msvc/x64/
+*.vpwhist
+*.vtg
