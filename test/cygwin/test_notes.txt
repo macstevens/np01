@@ -1,0 +1,13 @@
+copy the following files to np01/gcc/Release
+
+a.csv
+assign_ab.bat
+assign_test_10min.bat
+assign_test_1hr.bat
+assign_test_8hr.bat
+b.csv
+cyggcc_s-seh-1.dll
+cygstdc++-6.dll
+cygwin1.dll
+
+

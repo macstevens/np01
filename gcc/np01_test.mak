@@ -21,7 +21,7 @@ ifeq "$(CFG)" "Debug"
 OUTDIR=Debug
 OUTFILE=$(OUTDIR)/np01_test.exe
 CFG_INC=-I.. -I../../cf01
-CFG_LIB=$(OUTDIR)/np01.a  ../../cf01/slickedit_gcc/$(OUTDIR)/cf01.a
+CFG_LIB=$(OUTDIR)/np01.a  ../../cf01/gcc/$(OUTDIR)/cf01.a
 CFG_OBJ=
 COMMON_OBJ=$(OUTDIR)/main.o 
 OBJ=$(COMMON_OBJ) $(CFG_OBJ)
@@ -46,7 +46,7 @@ $(OUTDIR):
 # Build dependencies
 deps:
 	@(cd .;$(MAKE) -f np01.mak CFG=$(CFG))
-	@(cd ../../cf01/slickedit_gcc/;$(MAKE) -f cf01.mak CFG=$(CFG))
+	@(cd ../../cf01/gcc/;$(MAKE) -f cf01.mak CFG=$(CFG))
 
 # Rebuild this project
 rebuild: cleanall all
@@ -59,7 +59,7 @@ clean:
 # Clean this project and all dependencies
 cleanall: clean
 	@(cd .;$(MAKE) -f np01.mak cleanall CFG=$(CFG))
-	@(cd ../../cf01/slickedit_gcc/;$(MAKE) -f cf01.mak cleanall CFG=$(CFG))
+	@(cd ../../cf01/gcc/;$(MAKE) -f cf01.mak cleanall CFG=$(CFG))
 endif
 
 #
@@ -70,7 +70,7 @@ ifeq "$(CFG)" "Release"
 OUTDIR=Release
 OUTFILE=$(OUTDIR)/np01_test.exe
 CFG_INC=-I.. -I../../cf01
-CFG_LIB=$(OUTDIR)/np01.a  ../../cf01/slickedit_gcc/$(OUTDIR)/cf01.a
+CFG_LIB=$(OUTDIR)/np01.a  ../../cf01/gcc/$(OUTDIR)/cf01.a
 CFG_OBJ=
 COMMON_OBJ=$(OUTDIR)/main.o 
 OBJ=$(COMMON_OBJ) $(CFG_OBJ)
@@ -95,7 +95,7 @@ $(OUTDIR):
 # Build dependencies
 deps:
 	@(cd .;$(MAKE) -f np01.mak CFG=$(CFG))
-	@(cd ../../cf01/slickedit_gcc/;$(MAKE) -f cf01.mak CFG=$(CFG))
+	@(cd ../../cf01/gcc/;$(MAKE) -f cf01.mak CFG=$(CFG))
 
 # Rebuild this project
 rebuild: cleanall all
@@ -108,7 +108,7 @@ clean:
 # Clean this project and all dependencies
 cleanall: clean
 	@(cd .;$(MAKE) -f np01.mak cleanall CFG=$(CFG))
-	@(cd ../../cf01/slickedit_gcc/;$(MAKE) -f cf01.mak cleanall CFG=$(CFG))
+	@(cd ../../cf01/gcc/;$(MAKE) -f cf01.mak cleanall CFG=$(CFG))
 endif
 
 #
@@ -119,7 +119,7 @@ ifeq "$(CFG)" "Profile"
 OUTDIR=Profile
 OUTFILE=$(OUTDIR)/np01_test.exe
 CFG_INC=-I.. -I../../cf01
-CFG_LIB=$(OUTDIR)/np01.a  ../../cf01/slickedit_gcc/$(OUTDIR)/cf01.a
+CFG_LIB=$(OUTDIR)/np01.a  ../../cf01/gcc/$(OUTDIR)/cf01.a
 CFG_OBJ=
 COMMON_OBJ=$(OUTDIR)/main.o 
 OBJ=$(COMMON_OBJ) $(CFG_OBJ)
@@ -144,7 +144,7 @@ $(OUTDIR):
 # Build dependencies
 deps:
 	@(cd .;$(MAKE) -f np01.mak CFG=$(CFG))
-	@(cd ../../cf01/slickedit_gcc/;$(MAKE) -f cf01.mak CFG=$(CFG))
+	@(cd ../../cf01/gcc/;$(MAKE) -f cf01.mak CFG=$(CFG))
 
 # Rebuild this project
 rebuild: cleanall all
@@ -157,5 +157,5 @@ clean:
 # Clean this project and all dependencies
 cleanall: clean
 	@(cd .;$(MAKE) -f np01.mak cleanall CFG=$(CFG))
-	@(cd ../../cf01/slickedit_gcc/;$(MAKE) -f cf01.mak cleanall CFG=$(CFG))
+	@(cd ../../cf01/gcc/;$(MAKE) -f cf01.mak cleanall CFG=$(CFG))
 endif

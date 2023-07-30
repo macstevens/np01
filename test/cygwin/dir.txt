@@ -1,0 +1,20 @@
+ Volume in drive C is Windows8_OS
+ Volume Serial Number is E871-F015
+
+ Directory of C:\code\main\cpp\np01\test\cygwin
+
+07/26/2023  11:26 PM    <DIR>          .
+07/26/2023  11:26 PM    <DIR>          ..
+07/19/2023  11:38 PM               100 a.csv
+07/19/2023  11:38 PM               155 assign_ab.bat
+07/19/2023  11:38 PM               180 assign_test_10min.bat
+07/19/2023  11:38 PM               200 assign_test_1hr.bat
+07/19/2023  11:38 PM               110 assign_test_8hr.bat
+07/19/2023  11:38 PM                87 b.csv
+09/12/2020  08:04 AM            73,747 cyggcc_s-seh-1.dll
+09/12/2020  08:04 AM         1,716,243 cygstdc++-6.dll
+08/22/2020  11:59 AM         3,556,388 cygwin1.dll
+07/26/2023  11:26 PM                 0 dir.txt
+07/26/2023  11:26 PM                 0 test_notes.txt
+              11 File(s)      5,347,210 bytes
+               2 Dir(s)  644,524,732,416 bytes free

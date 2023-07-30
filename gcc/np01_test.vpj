@@ -96,7 +96,7 @@
 		</Menu>
 		<Dependencies Name="Debug">
 			<Dependency Project="np01.vpj"/>
-			<Dependency Project="../../cf01/slickedit_gcc/cf01.vpj"/>
+			<Dependency Project="../../cf01/gcc/cf01.vpj"/>
 		</Dependencies>
 	</Config>
 	<Config
@@ -190,7 +190,7 @@
 		</Menu>
 		<Dependencies Name="Release">
 			<Dependency Project="np01.vpj"/>
-			<Dependency Project="../../cf01/slickedit_gcc/cf01.vpj"/>
+			<Dependency Project="../../cf01/gcc/cf01.vpj"/>
 		</Dependencies>
 	</Config>
 	<Config
@@ -284,7 +284,7 @@
 		</Menu>
 		<Dependencies Name="Release">
 			<Dependency Project="np01.vpj"/>
-			<Dependency Project="../../cf01/slickedit_gcc/cf01.vpj"/>
+			<Dependency Project="../../cf01/gcc/cf01.vpj"/>
 		</Dependencies>
 	</Config>
 	<Files>

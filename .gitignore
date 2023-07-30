@@ -1,13 +1,16 @@
-/msvc/np01/.vs
+#ignore these files
+*.a
+*.exe
+*.o
 *.vcxproj.filters
 *.vcxproj.user
-/msvc/np01/np01/x64
-/msvc/np01/np01_test/x64
-/msvc/np01/x64
-/slickedit_gcc/Profile/
-/slickedit_gcc/Release/
-/msvc/.vs
-/msvc/np01_test/x64/
-/msvc/x64/
 *.vpwhist
 *.vtg
+/msvc/.vs
+/msvc/np01/.vs
+/msvc/np01/x64/
+/msvc/np01_test/x64/
+/msvc/x64/
+/gcc/Debug/
+/gcc/Profile/
+/gcc/Release/
