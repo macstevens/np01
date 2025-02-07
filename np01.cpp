@@ -2812,7 +2812,7 @@ delete m_node_map_a;
 AA_DECR_CALL_DEPTH();
 }
 
-/* initialize node maps A & B, including locator grir.  Initialize edge
+/* initialize node maps A & B, including locator grid.  Initialize edge
 locator grid */
 void np01_xy_pair_map::init_ab(
     const np01_xy_pair_map_init_ab_params *init_params){
@@ -2836,11 +2836,13 @@ const size_t point_count_b = (init_params->xy_vec_b).size();
 const size_t point_count_ab = point_count_a + point_count_b;
 if((point_count_ab > 0) && (init_params->loc_grid_density > 0.0)){
     /* bounding box of all points */
+    const np01_xy& xy_0 = ( point_count_a > 0 ) ?
+        (init_params->xy_vec_a).front() : (init_params->xy_vec_b).front();
     np01_float64 x,y;
-    np01_float64 x_min=std::numeric_limits<np01_float64>::max(); 
-    np01_float64 y_min=std::numeric_limits<np01_float64>::max(); 
-    np01_float64 x_max=-std::numeric_limits<np01_float64>::max(); 
-    np01_float64 y_max=-std::numeric_limits<np01_float64>::max(); 
+    np01_float64 x_min=xy_0.first;
+    np01_float64 y_min=xy_0.second;
+    np01_float64 x_max=xy_0.first;
+    np01_float64 y_max=xy_0.second; 
     np01_xy_vec_citr xy_itr;
     np01_xy_vec_citr xy_end_itr = (init_params->xy_vec_a).end();
     for(xy_itr = (init_params->xy_vec_a).begin(); xy_itr != xy_end_itr; ++xy_itr){
